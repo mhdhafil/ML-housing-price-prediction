@@ -1,5 +1,7 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
 
 
 
@@ -10,21 +12,22 @@ fetures = ['LotArea', 'YearBuilt', '1stFlrSF', '2ndFlrSF', 'FullBath', 'BedroomA
 
 X = hm_data[fetures]
 # print(X.describe())
-
 # print(X.head())
+train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=1)
 
 
 # creating a model using DecisionTreeRegressor
 # random_state is provided for model reproducability
-model = DecisionTreeRegressor(random_state=1)
+model = DecisionTreeRegressor()
 
 # fitting model
-model.fit(X,y)
+model.fit(train_X,train_y)
 
 # making predictions
-predictions = model.predict(X)
+predictions = model.predict(val_X)
 # print(predictions)
 
 # Result review
-print(y.head(), predictions[:5])
+print(val_y.head(), predictions[:5])
 
+print(mean_absolute_error(val_y, predictions))
